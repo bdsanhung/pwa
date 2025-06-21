@@ -16,6 +16,11 @@ function App() {
       applicationServerKey: urlBase64ToUint8Array("BP873nMXDI0ghN4zAO0I0NvgQohYBfLGEa9-EQXgtoA0W29HnH1Qrcw1H1n0a7LuGNmNmy1OalcWH7uPo-AXF2A")
     });
     console.log("Push Subscription:", JSON.stringify(sub));
+
+    
+    // Append dữ liệu vào div
+    const detailsDiv = document.getElementById('subscription-details');
+    detailsDiv.innerHTML = JSON.stringify(sub);
     alert("Push đăng ký thành công. Gửi subscription này lên server để lưu lại.");
   };
 
@@ -41,6 +46,8 @@ function App() {
       <button onClick={subscribeToNotifications} className="mt-4 p-2 bg-blue-500 text-white rounded">
         Đăng ký thông báo
       </button>
+      <div id="subscription-details"></div>
+      
     </div>
   );
 }
