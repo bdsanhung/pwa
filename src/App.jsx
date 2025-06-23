@@ -9,20 +9,26 @@ function App() {
     }
   }, []);
 
-  const subscribeToNotifications = async () => {
-    const reg = await navigator.serviceWorker.ready;
-    const sub = await reg.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array("BP873nMXDI0ghN4zAO0I0NvgQohYBfLGEa9-EQXgtoA0W29HnH1Qrcw1H1n0a7LuGNmNmy1OalcWH7uPo-AXF2A")
-    });
-    console.log("Push Subscription:", JSON.stringify(sub));
+const subscribeToNotifications = async () => {
+  const reg = await navigator.serviceWorker.ready;
+  const sub = await reg.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey: urlBase64ToUint8Array("BP873nMXDI0ghN4zAO0I0NvgQohYBfLGEa9-EQXgtoA0W29HnH1Qrcw1H1n0a7LuGNmNmy1OalcWH7uPo-AXF2A")
+  });
 
-    
-    // Append dữ liệu vào div
-    const detailsDiv = document.getElementById('subscription-details');
-    detailsDiv.innerHTML = JSON.stringify(sub);
-    alert("Push đăng ký thành công. Gửi subscription này lên server để lưu lại.");
+  // Tạo bản sao để xử lý endpoint
+  const cleanSub = {
+    ...sub.toJSON(),
+    endpoint: sub.endpoint.replace(/\s/g, '') // loại bỏ dấu cách trắng
   };
+
+  console.log("Push Subscription (đã xử lý):", JSON.stringify(cleanSub));
+
+  // Append dữ liệu vào div
+  const detailsDiv = document.getElementById('subscription-details');
+  detailsDiv.innerHTML = JSON.stringify(cleanSub, null, 2); // format đẹp
+  alert("Push đăng ký thành công. Gửi subscription này lên server để lưu lại.");
+};
 
   function urlBase64ToUint8Array(base64String) {
     const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
